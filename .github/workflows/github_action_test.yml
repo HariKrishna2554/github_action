@@ -5,6 +5,9 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        group: [ 1, 2 ]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
@@ -16,4 +19,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run pytest
-        run: pytest -k test_my_file.py
+        run: pytest --splits 2 --group ${{ matrix.group }}
